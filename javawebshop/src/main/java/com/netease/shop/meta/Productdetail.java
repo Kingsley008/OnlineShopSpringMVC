@@ -8,9 +8,21 @@ public class Productdetail {
     private String image; 
     private String summary; //摘要
     private String detail;  //正文 
-    private int buyNum;
+	private int buyNum;
     private boolean isBuy;
     private boolean isSell;
+
+
+	public int getBuyNum() {
+		return buyNum;
+	}
+
+
+
+	public void setBuyNum(int buyNum) {
+		this.buyNum = buyNum;
+	}
+
     
     
     public boolean isBuy() {

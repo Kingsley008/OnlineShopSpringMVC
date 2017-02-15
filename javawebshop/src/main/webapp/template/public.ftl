@@ -51,6 +51,12 @@
                     <input class="u-ipt price" name="price"/>元
                 </div>
             </div>
+            <div class="fmitem">
+                <label class="fmlab">数量：</label>
+                <div class="fmipt">
+                    <input class="u-ipt price" name="productnum"/>
+                </div>
+            </div>
             <div class="fmitem fmitem-nolab fmitem-btn">
                 <div class="fmipt">
                     <button type="submit" class="u-btn u-btn-primary u-btn-lg">发 布</button>

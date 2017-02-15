@@ -19,8 +19,9 @@ public interface Contentdao {
 		   @Result(property="price", column="price"),
 		   @Result(property="image", column="icon"),
 		   @Result(property="title", column="title"),
+		   @Result(property="productnum", column="productnum"),
 		})
-	@Select("select id,price,title,icon from content")
+	@Select("select id,price,title,icon,productnum from content")
   List <IndexInfo> getIndexInfo();
 	@Results({
 		   @Result(property="id", column="id"),
@@ -70,8 +71,8 @@ public interface Contentdao {
 	int deleteContent(@Param(value = "id")int id);
 	
 	
-	@Insert("insert into content values(0,#{price},#{title},#{image},#{summary},#{detail},100);")
-	int insertConetnt(@Param(value = "price")long price,@Param(value = "title")String title,@Param(value = "image")String image,
+	@Insert("insert into content values(0,#{price},#{title},#{image},#{summary},#{detail},#{productnum});")
+	int insertConetnt(@Param(value = "productnum")int productnum,@Param(value = "price")long price,@Param(value = "title")String title,@Param(value = "image")String image,
 			@Param(value = "detail")String detail,@Param(value = "summary")String summary);
 	
 	//查最后一条记录 SELECT * FROM 表名 ORDER BY id DESC LIMIT 0,1 ;

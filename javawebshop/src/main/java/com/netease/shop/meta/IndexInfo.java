@@ -6,6 +6,7 @@ public class IndexInfo {
 	private String title;  // 标题    
 	private String image;   //图片地址 
 	private long price; //价格  
+	private int productnum;
 	private boolean isBuy; // 当前用户是否已经购买 
 	private boolean isSell;// 是否已经卖出 
 	   
@@ -14,12 +15,29 @@ public class IndexInfo {
 	}
 	
 
-	public IndexInfo(int id, String title, String image, long price) {
+
+	
+	public IndexInfo(int id, String title, String image, long price, int productnum, boolean isBuy, boolean isSell) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.image = image;
 		this.price = price;
+		this.productnum = productnum;
+		this.isBuy = isBuy;
+		this.isSell = isSell;
+	}
+
+
+
+
+	public int getProductnum() {
+		return productnum;
+	}
+
+
+	public void setProductnum(int productnum) {
+		this.productnum = productnum;
 	}
 
 

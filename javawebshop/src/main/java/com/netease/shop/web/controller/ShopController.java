@@ -43,7 +43,9 @@ public class ShopController {
 	     boolean b =dao.checkuser(username, password);
 	     System.out.println(b);
 	     User user = dao.getUser();
+	     if(b){
 	     session.setAttribute("user", user);
+	     }
 	     int code =response.getStatus();
 	     String message ="帐号密码错误";
 	     map.addAttribute("code",code);
@@ -88,7 +90,11 @@ public class ShopController {
 	public String Showdetail(@RequestParam("id")int id, ModelMap map,HttpSession session,HttpServletRequest request) throws IOException{
 		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
 		 Contentdao dao = context.getBean("contentdao",Contentdao.class); 
+		 
 		 Productdetail product = dao.showdetail(id);
+		 
+		// System.out.println(product.getBuynum());
+		 
 		User user =(User) session.getAttribute("user");
 		 //boolean 报错 临时方法
 	    boolean isBuy = product.isBuy();
@@ -203,18 +209,18 @@ public class ShopController {
 	}
 	
 	@RequestMapping(value="/publicSubmit")
-	public String publicSubmit(@RequestParam("title")String title,@RequestParam("image")String image,
+	public String publicSubmit(@RequestParam("productnum")int productnum, @RequestParam("title")String title,@RequestParam("image")String image,
 		    @RequestParam("detail")String detail,@RequestParam("price")long price,@RequestParam("summary")String summary,
 			ModelMap map,HttpServletResponse response){
 		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
 		Contentdao dao = context.getBean("contentdao",Contentdao.class);
-		System.out.println(image);
+	//	System.out.println(image);
 		String title2 = Tool.getNewString(title);
 		String image2  = Tool.getNewString(image);
 		String detail2 = Tool.getNewString(detail);
 		String summary2 = Tool.getNewString(summary);
 		//1.insert 
-	     int i=	dao.insertConetnt(price, title2, image2, detail2, summary2);
+	     int i=	dao.insertConetnt(productnum, price, title2, image2, detail2, summary2);
 	    //插入成功 返回product
 		if(i==1){
 			Productdetail product = dao.showSubmitDetail();
@@ -229,7 +235,7 @@ public class ShopController {
 	@RequestMapping(value="/upload",produces="application/json",method=RequestMethod.POST)
 	public String Upload(@RequestParam("file")MultipartFile file,HttpServletResponse response,ModelMap map) throws IllegalStateException, IOException{
 		 String fileName = file.getOriginalFilename();
-	     System.out.println(fileName);
+	   //  System.out.println(fileName);
 	     String fileName2 = Tool.getNewString(fileName);
 	     if(file!=null && !file.isEmpty()){
 	     file.transferTo(new File("C:/Users/ASUS/Desktop/javawebonlineshop/javawebshop/src/main/webapp/image/"+file.getOriginalFilename()));

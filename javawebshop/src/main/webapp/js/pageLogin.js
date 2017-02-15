@@ -19,8 +19,15 @@
 						data:{userName:value1,password:value2},
 						url:'/javawebshop/shop/logincheck',
 						success:function(result){
-							loading.hide();
-							location.href = '/javawebshop/shop/bookonline';
+							 if (result) {
+								 loading.hide();
+								 location.href = '/javawebshop/shop/bookonline';
+								 
+					            } else {
+					            	loading.result('登录失败');
+									isSubmiting = false;
+					            }
+							
 						},
 						error:function(message){
 							loading.result(message||'登录失败');

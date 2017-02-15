@@ -18,12 +18,11 @@
             <div class="price">
                 <span class="v-unit">¥</span><span class="v-value">${product.price}</span>
             </div>
-            <div class="num">购买数量：<span id="plusNum" class="lessNum"><a>-</a></span><span class="totalNum" id="allNum">${product.buyNum}</span><span id="addNum" class="moreNum"><a>+</a></span></div>
+            <div class="num">购买数量：<span id="plusNum" class="lessNum"><a>-</a></span><span class="totalNum" id="allNum"></span><span id="addNum" class="moreNum"><a>+</a></span></div>
             <div class="oprt f-cb">
                 <#if user && user.usertype==0>
-                    <#if isBuy>
-                    <span class="u-btn u-btn-primary z-dis">已购买</span>
-                    <span class="buyprice">当时购买价格：¥${product.buyPrice}</span>
+                    <#if product.buyNum == 0>
+                    <span class="u-btn u-btn-primary z-dis">卖完啦，下次早点来</span>
                     <#else>
                     <button class="u-btn u-btn-primary" id="add" data-id="${product.id}" data-title="${product.title}" data-price="${product.price}">
                                                   加入购物车</button>

@@ -41,10 +41,10 @@
                         <div class="img"><img src="${x.image}" alt="${x.title}"></div>
                         <h3>${x.title}</h3>
                         <div class="price"><span class="v-unit">¥</span><span class="v-value">${x.price}</span></div>
-                        <#if user && user.usertype == 0 && isBuy><span class="had"><b>已购买</b></span></#if>
-                        <#if user && user.usertype == 1 && isBuy><span class="had"><b>已售出</b></span></#if>
+                        <#if user && user.usertype == 0 && x.productnum == 0><span class="had"><b>已售罄</b></span></#if>
+                        <#if user && user.usertype == 1 && x.productnum == 0><span class="had"><b>已售罄</b></span></#if>
                     </a>
-                    <#if user && user.usertype==1 && !isSell><span class="u-btn u-btn-normal u-btn-xs del" data-del="${x.id}">删除</span></#if>
+                    <#if user && user.usertype==1 ><span class="u-btn u-btn-normal u-btn-xs del" data-del="${x.id}">删除</span></#if>
                 </li>
             </#list>
         </#if>

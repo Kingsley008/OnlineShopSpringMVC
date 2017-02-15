@@ -20,7 +20,7 @@ import com.netease.shop.meta.User;
 @Controller
 public class ShopShowIndex {
 	
-	@RequestMapping(value = "/abc")
+	@RequestMapping(value = "/")
 	public String sendInfoToIndex(ModelMap map,HttpSession session,HttpServletRequest request) throws IOException{
 		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
 		Contentdao dao = context.getBean("contentdao",Contentdao.class); 
