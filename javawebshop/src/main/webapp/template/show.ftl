@@ -11,7 +11,7 @@
     </div>
     <#else>
     <div class="n-show f-cb" id="showContent">
-        <div class="img"><img src="../image/${product.image}" alt="" ></div>
+        <div class="img"><img src="${product.image}" alt="" ></div>
         <div class="cnt">
             <h2>${product.title}</h2>
             <p class="summary">${product.summary}</p>
@@ -30,7 +30,7 @@
                     </#if>
                 </#if>
                 <#if user && user.usertype==1>
-                <a href="/edit?id=${product.id}" class="u-btn u-btn-primary">编 辑</a>
+                <a href="/javawebshop/shop/edit?id=${product.id}" class="u-btn u-btn-primary">编 辑</a>
                 </#if>
             </div>
         </div>

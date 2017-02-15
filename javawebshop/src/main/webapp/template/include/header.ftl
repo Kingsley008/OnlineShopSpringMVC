@@ -14,7 +14,7 @@
             <li><a href="/javawebshop/shop/settleAccount">购物车</a></li>
             </#if>
             <#if user && user.usertype==1>
-            <li><a href="/public">发布</a></li>
+            <li><a href="/javawebshop/shop/public">发布</a></li>
             </#if>
         </ul>
     </div>

@@ -23,7 +23,7 @@
 					layer.hide();
 					loading.show();
 					ajax({
-						url:'/api/delete',
+						url:'/javawebshop/shop/delete',
 						data:{id:id},
 						success:function(json){
 							this.delItemNode(id);

@@ -27,14 +27,14 @@ import com.netease.shop.meta.Productlist;
 import com.netease.shop.meta.User;
 import com.netease.shop.service.CheckUser;
 import com.netease.shop.service.Trxinfo;
+import com.netease.shop.utils.Tool;
 
 @Controller
 public class ShopController {
 
-	
+	//验证用户合法性
 	@RequestMapping(value = "/logincheck" ,produces="application/json")
 	public String checklg(ModelMap map,@RequestParam("userName")String username,@RequestParam("password")String password,HttpServletResponse response,HttpSession session,HttpServletRequest request) throws IOException, ServletException{
-		//调用用户验证方法
 		 ApplicationContext context = new ClassPathXmlApplicationContext("application-context-service.xml");	
 	     CheckUser  dao = (CheckUser)context.getBean("checkuserimp");
 	     boolean b =dao.checkuser(username, password);
@@ -51,12 +51,14 @@ public class ShopController {
       
 	}
 	
+	//点击登入后，返回登入页面
 	@RequestMapping(value = "/login")
 	public String sendWelcome(ModelMap map,HttpSession session) throws IOException{
 		return "login";
 
 	}
 	
+	//返回主页面
 	@RequestMapping(value = "/bookonline")
 	public String sendInfoToIndex(ModelMap map,HttpSession session,HttpServletRequest request) throws IOException{
 		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
@@ -78,7 +80,7 @@ public class ShopController {
 		return"index";
 	}
 	
-	
+	//返回商品详情页
 	@RequestMapping(value = "/show")
 	public String Showdetail(@RequestParam("id")int id, ModelMap map,HttpSession session,HttpServletRequest request) throws IOException{
 		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
@@ -98,6 +100,7 @@ public class ShopController {
 		return"show";
 	}
 	
+	//处理订单
 	@RequestMapping(value = "/buy" ,produces="application/json",method=RequestMethod.POST)
 	public String checkBuy(@RequestBody List<Productlist> products,ModelMap map,HttpServletResponse response,HttpSession session,HttpServletRequest request) throws IOException, ServletException{
 		 ApplicationContext context = new ClassPathXmlApplicationContext("application-context-service.xml");	
@@ -115,10 +118,14 @@ public class ShopController {
 	     return"settleAccount";
       
 	}
+	
+	//点击购物车，返回购物车页面
 	@RequestMapping(value="/settleAccount")
 	public String settleAccount(){
 		return"settleAccount";
 	}
+	
+	//点击财务，返回财务页面
 	@RequestMapping(value = "/account")
     public String showAccount(HttpSession session, ModelMap map){
     ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
@@ -129,9 +136,95 @@ public class ShopController {
     ((ConfigurableApplicationContext)context).close();
 	return "account";
 	}
+	//点击推出返回到登入页面
 	@RequestMapping(value="/logout")
 	public String logout(HttpSession session){
 		session.removeAttribute("user");
 		return"login";
 	}
+	@RequestMapping(value="/edit")
+	public String edit(@RequestParam("id")int id,ModelMap map){
+		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
+		Contentdao dao = context.getBean("contentdao",Contentdao.class); 
+		Productdetail product = dao.showdetail(id);
+		map.addAttribute("product", product);
+	//	User user =(User) session.getAttribute("user");
+	  ((ConfigurableApplicationContext)context).close();
+		return "edit";
+	}
+	
+	@RequestMapping(value="/editSubmit")
+	public String editSubmit(@RequestParam("id")int id,@RequestParam("title")String title,@RequestParam("image")String image,
+    @RequestParam("detail")String detail,@RequestParam("price")long price,@RequestParam("summary")String summary,
+	ModelMap map,HttpServletResponse response){
+		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
+		Contentdao dao = context.getBean("contentdao",Contentdao.class); 
+		String title2 = Tool.getNewString(title);
+		String image2  = Tool.getNewString(image);
+		String detail2 = Tool.getNewString(detail);
+		String summary2 = Tool.getNewString(summary);
+		dao.updateContent(id, price, title2, image2, detail2, summary2);
+		Productdetail product = dao.showdetail(id);
+		map.addAttribute("product", product);
+	  ((ConfigurableApplicationContext)context).close();
+		return "editSubmit";
+	}
+	
+	//管理员主页删除商品
+	@RequestMapping(value="/delete",produces="application/json",method=RequestMethod.POST)
+	public String deleteGood(@RequestParam("id")int id,HttpServletResponse response,ModelMap map){
+	ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
+	Contentdao dao = context.getBean("contentdao",Contentdao.class);
+	
+	int i =dao.deleteContent(id);
+	boolean b = false;
+	
+	if(i==1){
+		b=true;
+	}
+	
+	int code = response.getStatus();
+	String message ="删除";
+   
+    map.addAttribute("code", code);
+    map.addAttribute("message",message);
+    map.addAttribute("result",b);
+    ((ConfigurableApplicationContext)context).close();
+	return"index";
+	}
+	
+	@RequestMapping(value="/public")
+	public String showPublic(){
+		
+		return"public";
+	}
+	
+	@RequestMapping(value="/publicSubmit")
+	public String publicSubmit(@RequestParam("title")String title,@RequestParam("image")String image,
+		    @RequestParam("detail")String detail,@RequestParam("price")long price,@RequestParam("summary")String summary,
+			ModelMap map,HttpServletResponse response){
+		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
+		Contentdao dao = context.getBean("contentdao",Contentdao.class);
+		String title2 = Tool.getNewString(title);
+		String image2  = Tool.getNewString(image);
+		String detail2 = Tool.getNewString(detail);
+		String summary2 = Tool.getNewString(summary);
+		//1.insert 
+	     int i=	dao.insertConetnt(price, title2, image2, detail2, summary2);
+	    //插入成功 返回product
+		if(i==1){
+			Productdetail product = dao.showSubmitDetail();
+			map.addAttribute("product", product);
+		}
+		//2.select 
+	
+		((ConfigurableApplicationContext)context).close();
+		return"publicSubmit";
+	}
+	
+	
+	
+   
+	
+    
 }
