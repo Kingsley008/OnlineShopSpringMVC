@@ -1,6 +1,8 @@
 package com.netease.shop.web.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.netease.shop.dao.Contentdao;
 import com.netease.shop.dao.GetAccount;
@@ -205,6 +208,7 @@ public class ShopController {
 			ModelMap map,HttpServletResponse response){
 		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
 		Contentdao dao = context.getBean("contentdao",Contentdao.class);
+		System.out.println(image);
 		String title2 = Tool.getNewString(title);
 		String image2  = Tool.getNewString(image);
 		String detail2 = Tool.getNewString(detail);
@@ -222,7 +226,23 @@ public class ShopController {
 		return"publicSubmit";
 	}
 	
+	@RequestMapping(value="/upload",produces="application/json",method=RequestMethod.POST)
+	public String Upload(@RequestParam("file")MultipartFile file,HttpServletResponse response,ModelMap map) throws IllegalStateException, IOException{
+		 String fileName = file.getOriginalFilename();
+	     System.out.println(fileName);
+	     String fileName2 = Tool.getNewString(fileName);
+	     if(file!=null && !file.isEmpty()){
+	     file.transferTo(new File("C:/Users/ASUS/Desktop/javawebonlineshop/javawebshop/src/main/webapp/image/"+file.getOriginalFilename()));
+	     }
+	     int code = response.getStatus(); 
+	     String message = "上传";
+	     String address = "../image/"+fileName2;
+	     map.addAttribute("code",code);
+	     map.addAttribute("message",message);
+	     map.addAttribute("result",address);
+	    return"public";
 	
+	}
 	
    
 	
