@@ -239,7 +239,7 @@ public class ShopController {
 	     String fileName2 = Tool.getNewString(fileName);
 	     if(file!=null && !file.isEmpty()){
 	    //pc file.transferTo(new File("C:/Users/ASUS/Desktop/javawebonlineshop/javawebshop/src/main/webapp/image/"+file.getOriginalFilename()));
-	      file.transferTo(new File("/home/javawebonlineshop/javawebshop/src/main/webapp/image/"+file.getOriginalFilename()));
+	      file.transferTo(new File("/home/OnlineShopSpringMVC/javawebshop/src/main/webapp/image/"+file.getOriginalFilename()));
 	     }
 	     int code = response.getStatus(); 
 	     String message = "上传";
