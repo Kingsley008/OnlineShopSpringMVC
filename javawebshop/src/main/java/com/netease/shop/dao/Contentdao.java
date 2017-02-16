@@ -63,8 +63,8 @@ public interface Contentdao {
 		   @Result(property="summary", column="abstract"),
 		   
 	})
-	@Update("update content set price=#{price},title=#{title},icon=#{image},text=#{detail},abstract=#{summary} where id=#{id}")
-	void updateContent(@Param(value = "id")int id,@Param(value = "price")long price,@Param(value = "title")String title,@Param(value = "image")String image,
+	@Update("update content set price=#{price},title=#{title},icon=#{image},text=#{detail},abstract=#{summary},productnum=#{productnum} where id=#{id}")
+	void updateContent(@Param(value = "productnum")int productnum,@Param(value = "id")int id,@Param(value = "price")long price,@Param(value = "title")String title,@Param(value = "image")String image,
 			@Param(value = "detail")String detail,@Param(value = "summary")String summary);
 	
 	@Delete("delete from content where id=#{id}")

@@ -9,11 +9,14 @@
     <div class="m-tab m-tab-fw m-tab-simple f-cb">
         <h2>已购买的内容</h2>
     </div>
+    
     <#if !buyList || !buyList?has_content>
     <div class="n-result">
         <h3>暂无内容！</h3>
     </div>
-    <#else>
+    </#if>
+    
+    <#if buyList??>
     <table class="m-table m-table-row n-table g-b3">
         <colgroup><col class="img"/><col/><col class="time"/><col/><col class="num"/><col/><col class="price"/><col/></colgroup>
         <thead>
@@ -21,7 +24,9 @@
         </thead>
         <tbody>
             <#list buyList as x>
+            <#if x.buyPrice?? && x.buyNum??>
             <#assign total = total + x.buyPrice*x.buyNum>
+            </#if>
             <tr>
                 <td><a href="/show?id=${x.id}"><img src="../image/${x.image}" alt="${x.title}"></a></td>
                 <td><h4><a href="/show?id=${x.id}">${x.title}</a></h4></td>

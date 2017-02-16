@@ -48,13 +48,13 @@
             <div class="fmitem">
                 <label class="fmlab">价格：</label>
                 <div class="fmipt">
-                    <input class="u-ipt price" name="price"/>元
+                    <input class="u-ipt price" name="price" type="number" min="1"/>元
                 </div>
             </div>
             <div class="fmitem">
                 <label class="fmlab">数量：</label>
                 <div class="fmipt">
-                    <input class="u-ipt price" name="productnum"/>
+                    <input class="u-ipt price" type="number" min="1" name="productnum"/>
                 </div>
             </div>
             <div class="fmitem fmitem-nolab fmitem-btn">

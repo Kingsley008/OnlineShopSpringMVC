@@ -2,7 +2,6 @@ package com.netease.shop.web.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -24,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.netease.shop.dao.Contentdao;
 import com.netease.shop.dao.GetAccount;
 import com.netease.shop.meta.Buylist;
+import com.netease.shop.meta.Buysellinfo;
 import com.netease.shop.meta.IndexInfo;
 import com.netease.shop.meta.Productdetail;
 import com.netease.shop.meta.Productlist;
@@ -41,7 +41,7 @@ public class ShopController {
 		 ApplicationContext context = new ClassPathXmlApplicationContext("application-context-service.xml");	
 	     CheckUser  dao = (CheckUser)context.getBean("checkuserimp");
 	     boolean b =dao.checkuser(username, password);
-	     System.out.println(b);
+	   //  System.out.println(b);
 	     User user = dao.getUser();
 	     if(b){
 	     session.setAttribute("user", user);
@@ -73,14 +73,10 @@ public class ShopController {
 		User user =(User) session.getAttribute("user");
 		
 		//暂时处理freemarker boolean 异常 
-		 boolean isBuy =productList.get(0).isBuy();
-		 boolean isSell =productList.get(0).isSell();
 		
 	    map.addAttribute("user",user);
 		map.addAttribute("type",type);
 		map.addAttribute("productList",productList);
-		map.addAttribute("isBuy", isBuy);
-		map.addAttribute("isSell", isSell);
 		 ((ConfigurableApplicationContext)context).close();	
 		return"index";
 	}
@@ -141,7 +137,11 @@ public class ShopController {
     GetAccount dao = context.getBean("getAccount",GetAccount.class);
     User user = (User)session.getAttribute("user");
     List<Buylist> list =dao.getBuylist(user.getId());
+
+    if(list!=null){
     map.addAttribute("buyList", list);
+    }
+    
     ((ConfigurableApplicationContext)context).close();
 	return "account";
 	}
@@ -163,7 +163,7 @@ public class ShopController {
 	}
 	
 	@RequestMapping(value="/editSubmit")
-	public String editSubmit(@RequestParam("id")int id,@RequestParam("title")String title,@RequestParam("image")String image,
+	public String editSubmit(@RequestParam("productnum")int productnum,@RequestParam("id")int id,@RequestParam("title")String title,@RequestParam("image")String image,
     @RequestParam("detail")String detail,@RequestParam("price")long price,@RequestParam("summary")String summary,
 	ModelMap map,HttpServletResponse response){
 		ApplicationContext context =new ClassPathXmlApplicationContext("application-context-dao.xml");
@@ -172,7 +172,7 @@ public class ShopController {
 		String image2  = Tool.getNewString(image);
 		String detail2 = Tool.getNewString(detail);
 		String summary2 = Tool.getNewString(summary);
-		dao.updateContent(id, price, title2, image2, detail2, summary2);
+		dao.updateContent(productnum, id, price, title2, image2, detail2, summary2);
 		Productdetail product = dao.showdetail(id);
 		map.addAttribute("product", product);
 	  ((ConfigurableApplicationContext)context).close();
@@ -238,7 +238,8 @@ public class ShopController {
 	   //  System.out.println(fileName);
 	     String fileName2 = Tool.getNewString(fileName);
 	     if(file!=null && !file.isEmpty()){
-	     file.transferTo(new File("C:/Users/ASUS/Desktop/javawebonlineshop/javawebshop/src/main/webapp/image/"+file.getOriginalFilename()));
+	    //pc file.transferTo(new File("C:/Users/ASUS/Desktop/javawebonlineshop/javawebshop/src/main/webapp/image/"+file.getOriginalFilename()));
+	      file.transferTo(new File("/home/javawebonlineshop/javawebshop/src/main/webapp/image/"+file.getOriginalFilename()));
 	     }
 	     int code = response.getStatus(); 
 	     String message = "上传";
@@ -249,6 +250,15 @@ public class ShopController {
 	    return"public";
 	
 	}
+	
+//	@RequestMapping(value="/test")
+//	public String test(ModelMap map){
+//		Buysellinfo bs = new Buysellinfo();
+//		bs.setBuy(true);
+//		map.addAttribute("info", bs);
+//		
+//		return"test";
+//	}
 	
    
 	
